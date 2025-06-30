@@ -23,7 +23,7 @@ endpoints {
 
 module "my_s3_bucket" {
   source      = "./modules/mi-recurso"
-  bucket_name = "my-module-bucket"
+  bucket_name = "my-module-bucket-v2"
 }
 
 output "bucket_id" {
