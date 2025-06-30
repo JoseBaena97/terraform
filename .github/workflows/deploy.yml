@@ -1,0 +1,56 @@
+name: Terraform Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout del repositorio
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Instalar Terraform
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: latest
+
+      # Iniciar LocalStack
+      - name: Start LocalStack
+        uses: localstack/setup-localstack@v0.2.3
+        with:
+          image-tag: latest
+          install-awslocal: true
+
+      # Ejecutar terraform init
+      - name: Terraform Init
+        run: terraform init
+        env:
+          AWS_ACCESS_KEY_ID: test
+          AWS_SECRET_ACCESS_KEY: test
+          AWS_DEFAULT_REGION: us-east-1
+
+      # Ejecutar terraform plan
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan
+        env:
+          AWS_ACCESS_KEY_ID: test
+          AWS_SECRET_ACCESS_KEY: test
+          AWS_DEFAULT_REGION: us-east-1
+
+      # Ejecutar terraform apply
+      - name: Terraform Apply
+        run: terraform apply -auto-approve tfplan
+        env:
+          AWS_ACCESS_KEY_ID: test
+          AWS_SECRET_ACCESS_KEY: test
+          AWS_DEFAULT_REGION: us-east-1
+
+      # Verificar el bucket creado
+      - name: Verify S3 Bucket
+        run: awslocal s3 ls | grep my-module-bucket
