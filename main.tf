@@ -23,14 +23,9 @@ endpoints {
 
 module "my_s3_bucket" {
   source      = "./modules/mi-recurso"
-  bucket_name = "my-module-bucket-v2"
+  bucket_name = "my-module-bucket"
 }
 
 output "bucket_id" {
   value = module.my_s3_bucket.bucket_id
 }
-
-# Coment
-#sdfgdsf
-
-#adf
