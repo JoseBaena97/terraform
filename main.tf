@@ -29,3 +29,8 @@ module "my_s3_bucket" {
 output "bucket_id" {
   value = module.my_s3_bucket.bucket_id
 }
+
+# Coment
+#sdfgdsf
+
+#adf
